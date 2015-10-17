@@ -1,0 +1,44 @@
+mediadrop-nginx:
+    image: mediadrop-nginx
+    container_name: mediadrop-nginx
+    hostname: nginx
+    restart: always
+    ports:
+        - "80:80"
+        - "443:443"
+    links:
+        - mediadrop-uwsgi
+    volumes_from:
+        - mediadrop-uwsgi
+mediadrop-uwsgi:
+    image: mediadrop-uwsgi
+    container_name: mediadrop-uwsgi
+    hostname: uwsgi
+    restart: always
+    environment:
+        - SMTP_SERVER=localhost
+        - SMTP_DOMAIN=localhost
+        - SMTP_FROM=noreply
+        - MYSQL_SERVER=mariadb
+        - MYSQL_ROOT_PASSWORD=ASDFrewq1
+        - MYSQL_DATABASE=mediadrop
+        - MYSQL_USER=mediadrop
+        - MYSQL_PASSWORD=ASDFrewq1
+    links:
+        - mediadrop-mariadb
+    volumes:
+        - /wsgi
+        - /mediadrop
+    command: /start.sh
+mediadrop-mariadb:
+    image: mariadb
+    container_name: mediadrop-mariadb
+    hostname: mariadb
+    restart: always
+    environment:
+        - MYSQL_ROOT_PASSWORD=ASDFrewq1
+        - MYSQL_DATABASE=mediadrop
+        - MYSQL_USER=mediadrop
+        - MYSQL_PASSWORD=ASDFrewq1
+    volumes:
+        - /var/lib/mysql
