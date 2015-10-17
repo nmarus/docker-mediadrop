@@ -62,9 +62,9 @@ deployment. It will however, work as-is.
 
         $ docker-compose up -d
 
-####Enable storing non persistent data by mapping volumes via the docker-compose.yml file
+####Enable Volume Mapping
 
-These steps will ensure that you have the non persistent files stored to your docker host.
+These steps will ensure that you have the non persistent files stored to your docker host. These changes are made from the docker-compose.yml file.
 
 1. Enable the persistent data volumes for "mediadrop-uwsgi":
 
@@ -77,7 +77,7 @@ These steps will ensure that you have the non persistent files stored to your do
         volumes:
             - /local/path/for/mysql:/var/lib/mysql
 
-####Enable Mediadrop most recent repository
+####Enable the Mediadrop Official Repository
 The installer script downloads a snapshot of the mediadrop repositry as it was on October 17th, 2015. If you wish to download the latest updates, do th following.
 
 ######Note 1: Depending on how much has changed in the repository, these scripts may not work.
