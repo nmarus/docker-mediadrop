@@ -1,9 +1,10 @@
 ### docker-mediadrop
 #####Mediadrop on Docker with Nginx, uWSGI, and MariaDB
 
+######Install/Run:
 
 1. Edit docker-compose.yml
-2. Install 
+2. Build 
 
         $ ./build.sh /all
 
