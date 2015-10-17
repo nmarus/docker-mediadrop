@@ -54,8 +54,6 @@ build_nginx() {
     {
         #remove image
         (docker rmi mediadrop-nginx || true &> /dev/null)
-        #pull latest base image
-        docker pull nginx
         (cd nginx && docker build --rm --no-cache -t mediadrop-nginx . )
     } | sfpipe nginix ${RED}
 }
@@ -65,8 +63,6 @@ build_uwsgi() {
     {
         #remove image
         (docker rmi mediadrop-uwsgi || true &> /dev/null)
-        #pull latest base image
-        docker pull debian:jessie
         (cd uwsgi && docker build --rm --no-cache -t mediadrop-uwsgi .)
     } | sfpipe uwsgi ${GREEN}
 }
@@ -85,7 +81,7 @@ if [ ! -z ${1+x} ]; then
         build_nginx &
         build_uwsgi &
         build_mariadb &
-        sleep 10
+        sleep 5
         while (($(ps aux | grep 'mediadrop' | grep -v 'grep' | wc -l) != 0)); do
             sleep 5 &> /dev/null
         done
