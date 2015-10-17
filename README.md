@@ -6,7 +6,7 @@
 1. Edit docker-compose.yml
 2. Build 
 
-        $ ./build.sh /all
+        $ ./build.sh all
 
 3. Run
 
