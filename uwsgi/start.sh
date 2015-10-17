@@ -45,6 +45,8 @@ init_mediadrop() {
     echo 'processes = 8' >> deployment.ini
     echo 'virtualenv = /venv/mediadrop' >> deployment.ini
     echo 'stats = 127.0.0.1:9191' >> deployment.ini
+    echo 'enable-threads = true' >> deployment.ini
+    echo 'harakiri = 30' >> deployment.ini
 
     #check if database has and tables defined
     local TESTDB="select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_schema = \"${MYSQL_DATABASE}\""
