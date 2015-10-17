@@ -42,7 +42,7 @@ init_mediadrop() {
     echo '[uwsgi]' >> deployment.ini
     echo 'socket = :9000' >> deployment.ini
     echo 'master = true' >> deployment.ini
-    echo 'processes = 8' >> deployment.ini
+    echo 'processes = 4' >> deployment.ini
     echo 'virtualenv = /venv/mediadrop' >> deployment.ini
     echo 'stats = 127.0.0.1:9191' >> deployment.ini
     echo 'enable-threads = true' >> deployment.ini
