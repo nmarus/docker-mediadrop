@@ -85,7 +85,8 @@ if [ ! -z ${1+x} ]; then
         build_nginx &
         build_uwsgi &
         build_mariadb &
-        while (($(ps aux | pgrep docker | wc -l) != 0)); do
+        sleep 10
+        while (($(ps aux | grep 'mediadrop' | grep -v 'grep' | wc -l) != 0)); do
             sleep 5 &> /dev/null
         done
         (docker rmi $(docker images -q -f dangling=true) &> /dev/null)

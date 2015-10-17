@@ -8,13 +8,14 @@ init_mediadrop() {
     rm -rf /wsgi/*
     rm -rf /mediadrop/*
 
-    if ${USE_OFFICIAL_GIT}; {
+    if ${USE_OFFICIAL_GIT}; then
         #download mediadrop latest from git
         git clone https://github.com/mediadrop/mediadrop.git /mediadrop
-    } else {
+
+    else
         #download mediadrop as tested with this implementation (October 17th 2015)
         git clone https://github.com/nmarus/mediadrop.git /mediadrop
-    }
+    fi
 
     #activate python virtual environment
     source /venv/mediadrop/bin/activate
