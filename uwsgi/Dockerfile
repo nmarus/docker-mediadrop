@@ -1,8 +1,14 @@
 FROM debian:jessie
 MAINTAINER Nick Marus <nmarus@gmail.com>
 
-#update apt and install
+#setup apt
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
+#setup snapshot repo for 20151019
+RUN apt-key adv --keyserver keys.gnupg.net --recv-keys 2D87D12D
+RUN echo "deb http://repo.r3cursion.com/debian/ jessie main" > /etc/apt/sources.list
+
+#install packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     apt-get -y install apt-utils && \
     apt-get -y install curl git mysql-client && \
@@ -15,7 +21,7 @@ RUN pip install uwsgi
 RUN pip install uwsgitop
 
 #install python virtual environment
-RUN mkdir /venv && cd /venv && virtualenv --distribute --no-site-packages mediadrop
+#RUN mkdir /venv && cd /venv && virtualenv --distribute --no-site-packages mediadrop
 
 #startup script
 COPY start.sh /start.sh
