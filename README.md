@@ -37,9 +37,7 @@ deployment. It will however, work as-is.
 
         $ docker-compose up -d
 
-4. Wait approximately 5-10 minutes for the initial build before attempting to access the web interface. Alternatively, instead of #3 run the following to watch the initial build and setup.
-
-        $ docker-compose up
+4. Wait approximately 5-10 minutes for the initial build before attempting to access the web interface. 
 
 ###Advanced:
 
