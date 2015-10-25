@@ -15,10 +15,10 @@
     * Adds customizations fto the deployment.ini
     * Configures UWSGI service in socket mode
     * Checks if database is not populated and runs the database scripts and optional databse search tables to the connected mediadtop-mariadb container
-    ######Note: See [start.sh] (https://github.com/nmarus/docker-mediadrop/blob/master/uwsgi/start.sh)
+    *Note: See [start.sh] (https://github.com/nmarus/docker-mediadrop/blob/master/uwsgi/start.sh)*
 2. *mediadrop-nginx* - Based on official docker nginx image with customized.
 nginx configuration, and self signed certs.
-    ######Note: By default, the nginx.conf runs non SSL to get around the Adobe Flash player requirements that do not work with self signed certificates for file upload in regard the ["File I/O Error #2038."] (http://stackoverflow.com/questions/1789863/swfupload-on-https-not-working) To enable SSL, and continue to have file uploads work, you must use a trusted CA signed certificate. (This seems to only affect MAC versions of the flashplayer) See SSL section below under Advanced Configuration.)
+    *Note: By default, the nginx.conf runs non SSL to get around the Adobe Flash player requirements that do not work with self signed certificates for file upload in regard the ["File I/O Error #2038."] (http://stackoverflow.com/questions/1789863/swfupload-on-https-not-working) To enable SSL, and continue to have file uploads work, you must use a trusted CA signed certificate. (This seems to only affect MAC versions of the flashplayer) See SSL section below under Advanced Configuration.)*
 3. *mediadrop-mariadb* - Based on official docker mariadb image. Uses environment variables defined in the docker-compose.yml to setup the mediadrop database.
 
 ###Quick Start:
