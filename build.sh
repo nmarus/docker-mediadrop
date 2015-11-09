@@ -1,5 +1,5 @@
 #!/bin/bash
-#used to pbuild images for mediadrop
+#used to build images for mediadrop
 
 set -e
 

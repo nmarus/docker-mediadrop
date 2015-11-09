@@ -1,12 +1,12 @@
 # Docker-Mediadrop
 ####Mediadrop on Docker with separate Nginx, uWSGI, and MariaDB containers
 
-###Requirements:
+### Requirements:
 
 - docker 1.8.x
 - docker-compose
 
-###Containers:
+### Containers:
 
 1. *mediadrop-uwsgi* - Based in debian:jessie. On first start it checks if mediadrop has been and installed. If not, it will:
     * Clone the mediadrop repo from github this build was based on
@@ -21,7 +21,7 @@ nginx configuration, and self signed certs.
     *Note: By default, the nginx.conf runs non SSL to get around the Adobe Flash player requirements that do not work with self signed certificates for file upload in regard the ["File I/O Error #2038."] (http://stackoverflow.com/questions/1789863/swfupload-on-https-not-working) To enable SSL, and continue to have file uploads work, you must use a trusted CA signed certificate. (This seems to only affect MAC versions of the flashplayer) See SSL section below under Advanced Configuration.)*
 3. *mediadrop-mariadb* - Based on official docker mariadb image. Uses environment variables defined in the docker-compose.yml to setup the mediadrop database.
 
-###Quick Start:
+### Quick Start:
 
 1. Clone this repository
 
@@ -37,11 +37,11 @@ deployment. It will however, work as-is.
 
         $ docker-compose up -d
 
-4. Wait approximately 5-10 minutes for the initial build before attempting to access the web interface. 
+4. Wait approximately 5-10 minutes for the initial build before attempting to access the web interface.
 
-###Advanced:
+### Advanced:
 
-####Enable SSL:
+#### Enable SSL:
 
 1. Modify the nginx/nginx.conf file
     * Remove the commented sections while also commenting out or removing the "listen 80" line in the main server section
@@ -60,26 +60,26 @@ deployment. It will however, work as-is.
 
         $ docker-compose up -d
 
-####Enable Volume Mapping
+#### Enable Volume Mapping
 
 These steps will ensure that you have the non persistent files stored to your docker host. These changes are made from the docker-compose.yml file.
 
 1. Enable the persistent data volumes for "mediadrop-uwsgi":
 
         volumes:
-            - /local/path/for/wsgi>:/wsgi
-            - /local/path/for/mediadrop>:/mediadrop
+            - /local/path/for/wsgi:/wsgi
+            - /local/path/for/mediadrop:/mediadrop
 
 2. Enable the persistent data volume for "mediadrop-mariadb":
 
         volumes:
             - /local/path/for/mysql:/var/lib/mysql
 
-####Enable the Mediadrop Official Repository
+#### Enable the Mediadrop Official Repository
 The installer script downloads a snapshot of the mediadrop repositry as it was on October 17th, 2015. If you wish to download the latest updates, do th following.
 
-######Note 1: Depending on how much has changed in the repository, these scripts may not work.
-######Note 2: If you have not enabled the storing of non persistent data outside of docker, your current setup will be reset to default.
+###### Note 1: Depending on how much has changed in the repository, these scripts may not work.
+###### Note 2: If you have not enabled the storing of non persistent data outside of docker, your current setup will be reset to default.
 
 1. Add an environment variable to the mediadrop-uwsgi section of the docker-compose.yml file.
 
