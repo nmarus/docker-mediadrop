@@ -20,13 +20,14 @@ mediadrop-uwsgi:
         - SMTP_DOMAIN=localhost
         - SMTP_FROM=noreply
         - MYSQL_SERVER=mariadb
-        - MYSQL_ROOT_PASSWORD=ASDFrewq1
+        - MYSQL_ROOT_PASSWORD=ZXCVfdsa1
         - MYSQL_DATABASE=mediadrop
         - MYSQL_USER=mediadrop
-        - MYSQL_PASSWORD=ASDFrewq1
+        - MYSQL_PASSWORD=ZXCVfdsa1
     links:
         - mediadrop-mariadb
     volumes:
+        - /venv
         - /wsgi
         - /mediadrop
     command: /start.sh
@@ -36,9 +37,9 @@ mediadrop-mariadb:
     hostname: mariadb
     restart: always
     environment:
-        - MYSQL_ROOT_PASSWORD=ASDFrewq1
+        - MYSQL_ROOT_PASSWORD=ZXCVfdsa1
         - MYSQL_DATABASE=mediadrop
         - MYSQL_USER=mediadrop
-        - MYSQL_PASSWORD=ASDFrewq1
+        - MYSQL_PASSWORD=ZXCVfdsa1
     volumes:
         - /var/lib/mysql

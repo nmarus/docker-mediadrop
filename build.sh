@@ -49,11 +49,24 @@ sfpipe() {
     done
 }
 
+#check for root access and re-init /srv folders
+reset_srv() {
+    if [ "$(whoami)" == "root" ]; then
+        #remove data folders for rebuild
+        rm -rf /srv/wsgi &> /dev/null || true
+        rm -rf /srv/mediadrop &> /dev/null || true
+        rm -rf /srv/venv &> /dev/null || true
+        rm -rf /srv/mariadb &> /dev/null || true
+    else
+        sflog "This command must be run as root or sudo."
+    fi
+}
+
 #build nginx
 build_nginx() {
     {
         #remove image
-        (docker rmi mediadrop-nginx || true &> /dev/null)
+        (docker rmi mediadrop-nginx &> /dev/null || true )
         (cd nginx && docker build --rm --no-cache -t mediadrop-nginx . )
     } | sfpipe nginix ${RED}
 }
@@ -62,7 +75,7 @@ build_nginx() {
 build_uwsgi() {
     {
         #remove image
-        (docker rmi mediadrop-uwsgi || true &> /dev/null)
+        (docker rmi mediadrop-uwsgi &> /dev/null || true )
         (cd uwsgi && docker build --rm --no-cache -t mediadrop-uwsgi .)
     } | sfpipe uwsgi ${GREEN}
 }
@@ -85,17 +98,15 @@ if [ ! -z ${1+x} ]; then
         while (($(ps aux | grep 'mediadrop' | grep -v 'grep' | wc -l) != 0)); do
             sleep 5 &> /dev/null
         done
-        (docker rmi $(docker images -q -f dangling=true) &> /dev/null)
-        exit 0
     elif [ "${1}" = "nginx" ]; then
         build_nginx
-        (docker rmi $(docker images -q -f dangling=true) &> /dev/null)
-        exit 0
     elif [ "${1}" = "uwsgi" ]; then
         build_uwsgi
-        (docker rmi $(docker images -q -f dangling=true) &> /dev/null)
-        exit 0
+    elif [ "${1}" = "reset" ]; then
+        reset_srv
     fi
+    sflog "Done."
 else
-    echo "Usage: ${0} all|nginx|uwsgi"
+    echo "Usage: ${0} all|nginx|uwsgi|reset"
 fi
+docker rmi $(docker images -q -f dangling=true) &> /dev/null

@@ -21,9 +21,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
 RUN pip install uwsgi
 RUN pip install uwsgitop
 
-#install python virtual environment
-RUN mkdir /venv && cd /venv && virtualenv --distribute --no-site-packages mediadrop
-
 #startup script
 COPY start.sh /start.sh
 RUN chmod +x /start.sh

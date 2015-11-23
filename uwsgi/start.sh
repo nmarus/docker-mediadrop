@@ -7,6 +7,10 @@ init_mediadrop() {
     #clear directory contents
     rm -rf /wsgi/*
     rm -rf /mediadrop/*
+    rm -rf /venv/*
+
+    #install python virtual environment
+    (cd /venv && virtualenv --distribute --no-site-packages mediadrop)
 
     #if USE_OFFICIAL_GIT is unset
     if [ -z ${USE_OFFICIAL_GIT+x} ]; then
@@ -41,10 +45,11 @@ init_mediadrop() {
     sed -i 's,cache_dir = %(here)s/data,cache_dir = /wsgi/data/,' deployment.ini
     sed -i 's,image_dir = %(here)s/data/images,image_dir = /wsgi/data/images/,' deployment.ini
     sed -i 's,media_dir = %(here)s/data/media,media_dir = /wsgi/data/media/,' deployment.ini
+    sed -i 's,sqlalchemy.pool_recycle = 3600,sqlalchemy.pool_recycle = 200,' deployment.ini
+    
     #setup directory and permissions
     cp -a /mediadrop/data .
     chmod -R 777 /wsgi/data
-
     #wsgi config
     echo '' >> deployment.ini
     echo '[uwsgi]' >> deployment.ini
@@ -54,15 +59,6 @@ init_mediadrop() {
     echo 'virtualenv = /venv/mediadrop' >> deployment.ini
     echo 'stats = 127.0.0.1:9191' >> deployment.ini
 
-    #check if database has and tables defined
-    local TESTDB="select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_schema = \"${MYSQL_DATABASE}\""
-    if [ $(mysql -ss --host=${MYSQL_SERVER} -u root -p${MYSQL_ROOT_PASSWORD} -e "${TESTDB}") == "0" ]; then
-         #setup database
-         paster setup-app deployment.ini
-         #setup advanced seach
-         mysql --host=${MYSQL_SERVER} -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /mediadrop/setup_triggers.sql
-    fi
-
     #fix crossdomain policy
     (cd /mediadrop/mediadrop/public && sed -i 's,\.cooliris\.com" secure="false",",' crossdomain.xml)
 }
@@ -70,6 +66,19 @@ init_mediadrop() {
 #check if volume has been initialized
 if [ ! -f /wsgi/deployment.ini ]; then
     init_mediadrop
+fi
+
+#check if database has and tables defined
+TESTDB="select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_schema = \"${MYSQL_DATABASE}\""
+if [ $(mysql -ss --host=${MYSQL_SERVER} -u root -p${MYSQL_ROOT_PASSWORD} -e "${TESTDB}") == "0" ]; then
+    #activate python virtual environment
+    source /venv/mediadrop/bin/activate
+
+    #setup database
+    paster setup-app deployment.ini
+
+    #setup advanced seach
+    mysql --host=${MYSQL_SERVER} -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < /mediadrop/setup_triggers.sql
 fi
 
 #run uwsgi daemon
